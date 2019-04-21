@@ -44,10 +44,13 @@ public class ApolloConfigDemo {
         }
       }
     };
+
     config = ConfigService.getAppConfig();
     config.addChangeListener(changeListener);
+
     publicConfig = ConfigService.getConfig("TEST1.apollo");
     publicConfig.addChangeListener(changeListener);
+
     applicationConfigFile = ConfigService.getConfigFile("application", ConfigFileFormat.Properties);
     xmlConfigFile = ConfigService.getConfigFile("datasources", ConfigFileFormat.XML);
     xmlConfigFile.addChangeListener(new ConfigFileChangeListener() {
@@ -56,6 +59,34 @@ public class ApolloConfigDemo {
         logger.info(changeEvent.toString());
       }
     });
+
+  }
+
+  public static void main(String[] args) throws IOException {
+    ApolloConfigDemo apolloConfigDemo = new ApolloConfigDemo();
+    apolloConfigDemo.printEnvInfo();
+    System.out.println("Apollo Config Demo. Please input key to get the value.");
+
+    while (true) {
+      System.out.print("> ");
+      String input = new BufferedReader(new InputStreamReader(System.in, Charsets.UTF_8)).readLine();
+      if (input == null || input.length() == 0) {
+        continue;
+      }
+      input = input.trim();
+      if (input.equalsIgnoreCase("application")) {
+        apolloConfigDemo.print("application");
+        continue;
+      }
+      if (input.equalsIgnoreCase("xml")) {
+        apolloConfigDemo.print("xml");
+        continue;
+      }
+      if (input.equalsIgnoreCase("quit")) {
+        System.exit(0);
+      }
+      apolloConfigDemo.getConfig(input);
+    }
   }
 
   private String getConfig(String key) {
@@ -94,30 +125,4 @@ public class ApolloConfigDemo {
     System.out.println(message);
   }
 
-  public static void main(String[] args) throws IOException {
-    ApolloConfigDemo apolloConfigDemo = new ApolloConfigDemo();
-    apolloConfigDemo.printEnvInfo();
-    System.out.println(
-        "Apollo Config Demo. Please input key to get the value.");
-    while (true) {
-      System.out.print("> ");
-      String input = new BufferedReader(new InputStreamReader(System.in, Charsets.UTF_8)).readLine();
-      if (input == null || input.length() == 0) {
-        continue;
-      }
-      input = input.trim();
-      if (input.equalsIgnoreCase("application")) {
-        apolloConfigDemo.print("application");
-        continue;
-      }
-      if (input.equalsIgnoreCase("xml")) {
-        apolloConfigDemo.print("xml");
-        continue;
-      }
-      if (input.equalsIgnoreCase("quit")) {
-        System.exit(0);
-      }
-      apolloConfigDemo.getConfig(input);
-    }
-  }
 }

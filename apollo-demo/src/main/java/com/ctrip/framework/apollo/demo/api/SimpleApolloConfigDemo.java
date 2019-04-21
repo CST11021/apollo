@@ -36,20 +36,16 @@ public class SimpleApolloConfigDemo {
         }
       }
     };
-    config = ConfigService.getAppConfig();
-    config.addChangeListener(changeListener);
-  }
 
-  private String getConfig(String key) {
-    String result = config.getProperty(key, DEFAULT_VALUE);
-    logger.info(String.format("Loading key : %s with value: %s", key, result));
-    return result;
+    // 获取Apollo配置
+    config = ConfigService.getAppConfig();
+    // 添加配置监听
+    config.addChangeListener(changeListener);
   }
 
   public static void main(String[] args) throws IOException {
     SimpleApolloConfigDemo apolloConfigDemo = new SimpleApolloConfigDemo();
-    System.out.println(
-        "Apollo Config Demo. Please input key to get the value. Input quit to exit.");
+    System.out.println("Apollo Config Demo. Please input key to get the value. Input quit to exit.");
     while (true) {
       System.out.print("> ");
       String input = new BufferedReader(new InputStreamReader(System.in, Charsets.UTF_8)).readLine();
@@ -63,4 +59,12 @@ public class SimpleApolloConfigDemo {
       apolloConfigDemo.getConfig(input);
     }
   }
+
+  private String getConfig(String key) {
+    String result = config.getProperty(key, DEFAULT_VALUE);
+    logger.info(String.format("Loading key : %s with value: %s", key, result));
+    return result;
+  }
+
+
 }
